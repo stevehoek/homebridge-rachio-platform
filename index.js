@@ -3,6 +3,8 @@
 const axios = require('axios')
 const http = require('http')
 const RachioClient = require('rachio')
+const PLATFORM_NAME = 'Rachio-Platform'
+const PLUGIN_NAME = '@leehendricks/homebridge-rachio-platform'
 
 let Accessory, Service, Characteristic
 
@@ -16,9 +18,7 @@ module.exports = function (homebridge) {
   Service = homebridge.hap.Service
   Characteristic = homebridge.hap.Characteristic
 
-  // For platform plugin to be considered as dynamic platform plugin,
-  // registerPlatform(pluginName, platformName, constructor, dynamic), dynamic must be true
-  homebridge.registerPlatform('homebridge-rachio-platform', 'Rachio-Platform', RachioPlatform)
+  homebridge.registerPlatform(PLATFORM_NAME, RachioPlatform)
 }
 
 // Platform constructor
@@ -157,7 +157,7 @@ class RachioPlatform {
               this.updateZoneAccessory(cachedZone, zone)
             } else {
               this.log('Removing Zone Number ' + zone.zoneNumber + ' because it is disabled.')
-              this.api.unregisterPlatformAccessories('homebridge-rachio-platform', 'Rachio-Platform', [cachedZone])
+              this.api.unregisterPlatformAccessories(PLUGIN_NAME, PLATFORM_NAME, [cachedZone])
             }
           } else if (zone.enabled) {
             this.addZone(zone)
@@ -280,7 +280,7 @@ class RachioPlatform {
 
     const newAccessory = new Accessory('Rachio Controller - ' + device.name, device.id)
     this.accessories.push(newAccessory)
-    this.api.registerPlatformAccessories('homebridge-rachio-platform', 'Rachio-Platform', [newAccessory])
+    this.api.registerPlatformAccessories(PLUGIN_NAME, PLATFORM_NAME, [newAccessory])
 
     return newAccessory
   }
@@ -375,7 +375,7 @@ class RachioPlatform {
 
     service
       .getCharacteristic(Characteristic.RemainingDuration)
-      .on('set', function (newValue, callback, context = {}) {
+      .on('set', function (newValue, callback) {
         platform.log.debug('Setting Remaining Duration: ' + newValue)
         if (newValue > 0) {
           platform.log.debug('Scheduling timer to reduce remaining duration')
@@ -407,7 +407,7 @@ class RachioPlatform {
     }
 
     this.accessories.push(newAccessory)
-    this.api.registerPlatformAccessories('homebridge-rachio-platform', 'Rachio-Platform', [newAccessory])
+    this.api.registerPlatformAccessories(PLUGIN_NAME, PLATFORM_NAME, [newAccessory])
 
     return newAccessory
   }

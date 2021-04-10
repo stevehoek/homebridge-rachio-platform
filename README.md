@@ -3,20 +3,20 @@
 Rachio plugin for Homebridge
 
 <p align="center">
-  <img width=300 src="https://github.com/kcharwood/homebridge-rachio-platform/blob/master/docs/example.gif?raw=true">
+  <img width=300 src="https://github.com/leehendricks/homebridge-rachio-platform/blob/master/docs/example.gif?raw=true">
 </p>
 
 
 # Installation
 
 1. Install homebridge using: `npm install -g homebridge`
-2. Install this plugin using: `npm install -g homebridge-rachio-platform`
-3. Update your configuration file. See `sample-config.json` snippet below.
+2. Install this plugin using: `npm install -g @leehendricks/homebridge-rachio-platform`
+3. Update your configuration file. See `config.json` snippet below.
 
 # Webhook Support
-`homebridge-rachio-platform` uses webhooks to update Homekit accessory status in real-time when a Rachio schedule is executing.
+`homebridge-rachio-platform` uses webhooks to update Homekit accessory status in real time when a Rachio schedule is executing.
 
-In order to support webhooks, you must know your external network IP address, and have the ability to open/forward a port from that IP address to your internal Homebridge server (typically a modem or router on your local network). Please do not file issues to this repository related to network configuration issues.
+In order to support webhooks, you must know your external network IP address and have the ability to open/forward a port from that IP address to your internal Homebridge server (typically a modem or router on your local network). Please do not file issues to this repository related to network configuration issues.
 
 Consult the log during setup. The plugin will print out a URL that can be used to test and confirm port forwarding is set up correctly.
 

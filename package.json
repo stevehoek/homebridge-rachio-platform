@@ -1,17 +1,18 @@
 {
-  "name": "homebridge-rachio-platform",
+  "name": "@leehendricks/homebridge-rachio-platform",
   "version": "1.1.0",
   "description": "Rachio support for Homebridge: https://github.com/nfarina/homebridge",
-  "license": "MIT",
+  "license": "Apache-2.0",
   "keywords": [
-    "homebridge-plugin"
+    "homebridge-plugin",
+    "rachio"
   ],
   "repository": {
     "type": "git",
-    "url": "git://github.com/kcharwood/homebridge-rachio-platform.git"
+    "url": "git://github.com/leehendricks/homebridge-rachio-platform.git"
   },
   "bugs": {
-    "url": "http://github.com/kcharwood/homebridge-rachio-platform/issues"
+    "url": "http://github.com/leehendricks/homebridge-rachio-platform/issues"
   },
   "engines": {
     "node": ">=10.17.0",
@@ -22,11 +23,11 @@
     "rachio": "^0.1.2"
   },
   "devDependencies": {
-    "eslint": "^7.13.0",
+    "eslint": "^7.24.0",
     "eslint-config-standard": "^16.0.2",
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-node": "^11.1.0",
-    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-promise": "4.3.1",
     "standard": "^16.0.3"
   },
   "scripts": {

@@ -1,0 +1,44 @@
+{
+  "pluginAlias": "Rachio-Platform",
+  "pluginType": "platform",
+  "singular": true,
+  "schema": {
+    "type": "object",
+    "properties": {
+      "name": {
+        "title": "Name",
+        "type": "string",
+        "required": true,
+        "default": "Rachio"
+      },
+      "api_key": {
+        "title": "Rachio API Key",
+        "description": "See https://rachio.readme.io/docs/authentication to obtain your Rachio API key.",
+        "type": "string",
+        "required": true,
+        "placeholder": "{API_KEY_OBTAINED_FROM_RACHIO}"
+      },
+      "external_webhook_address": {
+        "title": "External Webhook Address",
+        "description": "External IP and port to receive webhook requests. Forward these to your internal webhook port. Only necessary if you wish to update Homekit in real time when a Rachio schedule is executing.",
+        "type": "string",
+        "required": false,
+        "placeholder": "http://173.452.132.342:12453"
+      },
+      "internal_webhook_port": {
+        "title": "Internal Webhook Port",
+        "description": "Internal port for receiving webhook requests.",
+        "type": "number",
+        "required": false,
+        "placeholder": 27546
+      },
+      "clear_previous_webhooks": {
+        "title": "Clear Previous Webhooks",
+        "description": "Clear any previous webhooks before establishing a new one.",
+        "type": "boolean",
+        "required": false,
+        "default": false
+      }
+    }
+  }
+}
