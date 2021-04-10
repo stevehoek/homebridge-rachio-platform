@@ -18,7 +18,7 @@ module.exports = function (homebridge) {
   Service = homebridge.hap.Service
   Characteristic = homebridge.hap.Characteristic
 
-  homebridge.registerPlatform(PLATFORM_NAME, RachioPlatform)
+  homebridge.registerPlatform(PLUGIN_NAME, PLATFORM_NAME, RachioPlatform)
 }
 
 // Platform constructor
