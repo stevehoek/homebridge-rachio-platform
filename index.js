@@ -175,6 +175,10 @@ class RachioPlatform {
 
           this.configureWebhooks(this.config.external_webhook_address, device.id)
         }
+        else
+        {
+          this.log(`Skipping Rachio device due to ignore_controller_id config match: ${device.name} - ${device.id}`)
+        }
       }
       this.log('Devices refreshed')
     } catch (e) {
