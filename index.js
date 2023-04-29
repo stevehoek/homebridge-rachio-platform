@@ -123,9 +123,10 @@ class RachioPlatform {
       this.log('Refreshing Rachio devices...')
 
       // Refresh all Rachio devices (and zones) associated with the api_key
+      const { ignore_controller_id } = this.config
       const devices = await this.client.getDevices()
       for (const device of devices) {
-        if (device.id != this.config.ignore_controller_id)
+        if (device.id != ignore_controller_id)
         {
           this.log(`Loading Rachio device: ${device.name} - ${device.id}`)
 
