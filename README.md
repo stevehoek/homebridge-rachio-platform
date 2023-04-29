@@ -36,6 +36,6 @@ You can acquire your API key from Rachio using this [documentation](https://rach
   "internal_webhook_port": 27546, 
   "external_webhook_address": "http://173.452.132.342:12453",
   "clear_previous_webhooks": false,
-  "ignore_controller": "{CONTROLLER_ID_OBTAINED_FROM_RACHIO}
+  "ignore_controller_id": "{CONTROLLER_ID_OBTAINED_FROM_RACHIO}
 }
 ```

@@ -39,9 +39,9 @@
         "required": false,
         "default": false
       },
-      "ignore_controllers": {
-        "title": "Ignore Controllers",
-        "description": "Ignore controllers with ID's that match the ID entered here",
+      "ignore_controller_id": {
+        "title": "Ignore Controller",
+        "description": "Ignore controller with this ID",
         "type": "string",
         "required": false,
         "placeholder": "{CONTROLLER_ID_OBTAINED_FROM_RACHIO}"
