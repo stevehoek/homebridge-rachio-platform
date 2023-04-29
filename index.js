@@ -34,7 +34,7 @@ class RachioPlatform {
     this.accessories = [] // Array of all Homekit accessories (1 for each Rachio controller and each zone)
     this.activeZones = {} // map of active zones across all controllers, keyed by the zone's id
 
-    const { name, api_key, internal_webhook_port, external_webhook_address } = this.config
+    const { name, api_key, internal_webhook_port, external_webhook_address, ignore_controller_id } = this.config
 
     if (!api_key) {
       this.log.error('api_key is required in order to communicate with the Rachio API')
@@ -125,53 +125,56 @@ class RachioPlatform {
       // Refresh all Rachio devices (and zones) associated with the api_key
       const devices = await this.client.getDevices()
       for (const device of devices) {
-        this.log(`Loading Rachio device: ${device.name} - ${device.id}`)
+        if (device.id != this.config.ignore_controller_id)
+        {
+          this.log(`Loading Rachio device: ${device.name} - ${device.id}`)
 
-        const cachedDevice = this.accessories.find(accessory => accessory.UUID === device.id)
-        let accessory
-        if (cachedDevice) {
-          this.log('Device ' + device.name + ' is cached')
-          accessory = cachedDevice
-        } else {
-          accessory = this.addDevice(device)
-        }
-
-        accessory
-          .getService(Service.AccessoryInformation)
-          .setCharacteristic(Characteristic.Manufacturer, 'Rachio')
-          .setCharacteristic(Characteristic.Model, device.model)
-          .setCharacteristic(Characteristic.SerialNumber, device.serialNumber)
-
-        // Get all the zones for this Rachio device and sort by zone number
-        let zones = await device.getZones()
-        zones = zones.sort(function (a, b) {
-          return a.zoneNumber - b.zoneNumber
-        })
-
-        for (const zone of zones) {
-          const cachedZone = this.accessories.find(accessory => accessory.UUID === zone.id)
-
-          if (cachedZone) {
-            this.log('Zone ' + zone.name + ' is cached')
-            if (zone.enabled) {
-              this.updateZoneAccessory(cachedZone, zone)
-            } else {
-              this.log('Removing Zone Number ' + zone.zoneNumber + ' because it is disabled.')
-              this.api.unregisterPlatformAccessories(PLUGIN_NAME, PLATFORM_NAME, [cachedZone])
-            }
-          } else if (zone.enabled) {
-            this.addZone(zone)
+          const cachedDevice = this.accessories.find(accessory => accessory.UUID === device.id)
+          let accessory
+          if (cachedDevice) {
+            this.log('Device ' + device.name + ' is cached')
+            accessory = cachedDevice
           } else {
-            this.log('Skipping Zone Number ' + zone.zoneNumber + ' because it is disabled.')
+            accessory = this.addDevice(device)
           }
+
+          accessory
+            .getService(Service.AccessoryInformation)
+            .setCharacteristic(Characteristic.Manufacturer, 'Rachio')
+            .setCharacteristic(Characteristic.Model, device.model)
+            .setCharacteristic(Characteristic.SerialNumber, device.serialNumber)
+
+          // Get all the zones for this Rachio device and sort by zone number
+          let zones = await device.getZones()
+          zones = zones.sort(function (a, b) {
+            return a.zoneNumber - b.zoneNumber
+          })
+
+          for (const zone of zones) {
+            const cachedZone = this.accessories.find(accessory => accessory.UUID === zone.id)
+
+            if (cachedZone) {
+              this.log('Zone ' + zone.name + ' is cached')
+              if (zone.enabled) {
+                this.updateZoneAccessory(cachedZone, zone)
+              } else {
+                this.log('Removing Zone Number ' + zone.zoneNumber + ' because it is disabled.')
+                this.api.unregisterPlatformAccessories(PLUGIN_NAME, PLATFORM_NAME, [cachedZone])
+              }
+            } else if (zone.enabled) {
+              this.addZone(zone)
+            } else {
+              this.log('Skipping Zone Number ' + zone.zoneNumber + ' because it is disabled.')
+            }
+          }
+
+          // Determine which zone (if any) is active for this Rachio controller
+          const activeZone = await device.getActiveZone()
+          this.log.debug('Active zone for device ' + device.id + ': ' + (activeZone && activeZone.id))
+          if (activeZone) this.activeZones[activeZone.id] = true
+
+          this.configureWebhooks(this.config.external_webhook_address, device.id)
         }
-
-        // Determine which zone (if any) is active for this Rachio controller
-        const activeZone = await device.getActiveZone()
-        this.log.debug('Active zone for device ' + device.id + ': ' + (activeZone && activeZone.id))
-        if (activeZone) this.activeZones[activeZone.id] = true
-
-        this.configureWebhooks(this.config.external_webhook_address, device.id)
       }
       this.log('Devices refreshed')
     } catch (e) {

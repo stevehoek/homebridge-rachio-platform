@@ -1,6 +1,6 @@
 {
-  "name": "@leehendricks/homebridge-rachio-platform",
-  "version": "1.1.0",
+  "name": "@stevehoek/homebridge-rachio-platform",
+  "version": "1.1.1",
   "description": "Rachio support for Homebridge: https://github.com/nfarina/homebridge",
   "license": "Apache-2.0",
   "keywords": [
@@ -9,10 +9,10 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git://github.com/leehendricks/homebridge-rachio-platform.git"
+    "url": "git://github.com/stevehoek/homebridge-rachio-platform.git"
   },
   "bugs": {
-    "url": "http://github.com/leehendricks/homebridge-rachio-platform/issues"
+    "url": "http://github.com/stevehoek/homebridge-rachio-platform/issues"
   },
   "engines": {
     "node": ">=10.17.0",
